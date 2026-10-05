@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chwezir Code</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#12172a">
+<link rel="icon" href="icon.svg">
+<style>
+:root{--bg:#eef2f7;--panel:#e2e8f0;--ink:#1b2433;--dim:#64748b;--line:#cbd5e1;--acc:#b7791f;--accink:#fff;--kw:#7c3aed;--str:#047857;--num:#b45309;--com:#94a3b8;--tag:#0369a1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12172a;--panel:#1a2140;--ink:#e6e8f0;--dim:#8a93b2;--line:#2a3359;--acc:#f2b84b;--accink:#12172a;--kw:#c4a1ff;--str:#7ee0b0;--num:#f2b84b;--com:#5d6791;--tag:#6cc8f0}}
+:root[data-theme="dark"]{--bg:#12172a;--panel:#1a2140;--ink:#e6e8f0;--dim:#8a93b2;--line:#2a3359;--acc:#f2b84b;--accink:#12172a;--kw:#c4a1ff;--str:#7ee0b0;--num:#f2b84b;--com:#5d6791;--tag:#6cc8f0}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 "JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;display:flex;flex-direction:column;overflow:hidden}
+button,select{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{font:600 17px "Sora",system-ui,sans-serif;margin-right:6px;white-space:nowrap}
+.brand b{color:var(--acc)}
+.sp{flex:1}
+.btn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.btn:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.run{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:600}
+select.btn{background:var(--bg)}
+#tabs{display:flex;overflow-x:auto;background:var(--panel);border-bottom:1px solid var(--line)}
+.tab{display:flex;align-items:center;gap:8px;padding:6px 12px;border-right:1px solid var(--line);cursor:pointer;white-space:nowrap;color:var(--dim);border-bottom:2px solid transparent}
+.tab.on{color:var(--ink);background:var(--bg);border-bottom-color:var(--acc)}
+.tab i{font-style:normal;opacity:.6}.tab i:hover{opacity:1;color:var(--acc)}
+#add{padding:6px 14px;cursor:pointer;background:none;border:0;color:var(--dim)}
+main{flex:1;min-height:0;display:flex}
+.ed{flex:1;min-width:0;display:flex;position:relative}
+#gut{width:46px;padding:12px 8px 12px 0;text-align:right;color:var(--com);overflow:hidden;user-select:none;white-space:pre;border-right:1px solid var(--line);flex:none}
+.wrap{position:relative;flex:1;min-width:0}
+#hl,#ta{position:absolute;inset:0;margin:0;padding:12px;font:inherit;line-height:1.5;white-space:pre;overflow:auto;tab-size:2;border:0}
+#hl{pointer-events:none;color:var(--ink)}
+#ta{background:transparent;color:transparent;caret-color:var(--acc);resize:none;outline:none}
+#ta::selection{background:rgba(242,184,75,.35);color:transparent}
+.k{color:var(--kw)}.s{color:var(--str)}.n{color:var(--num)}.c{color:var(--com);font-style:italic}.t{color:var(--tag)}
+.out{width:42%;display:flex;flex-direction:column;border-left:1px solid var(--line);min-width:0}
+.out h2{margin:0;padding:6px 12px;font-size:13px;font-weight:600;background:var(--panel);border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+iframe{flex:1;border:0;background:#fff;min-height:0}
+#con{height:30%;overflow:auto;padding:8px 12px;margin:0;white-space:pre-wrap;border-top:1px solid var(--line);font-size:13px}
+#con .e{color:#e5484d}
+#hl,#ta,#gut{font-size:var(--fs,14px)}
+#side{width:176px;flex:none;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:auto}
+#side[hidden],#fbar[hidden]{display:none}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;color:var(--dim);font-size:12px}
+.fr{display:flex;justify-content:space-between;gap:4px;padding:4px 10px;cursor:pointer}
+.fr.on{background:var(--bg);box-shadow:inset 2px 0 var(--acc)}
+.fr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini{background:none;border:0;cursor:pointer;color:var(--dim);padding:0 4px}.mini:hover{color:var(--acc)}
+#fbar{display:flex;gap:6px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+#fbar input{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:inherit;width:140px}
+footer{display:flex;gap:16px;padding:4px 12px;background:var(--panel);border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+@media (max-width:760px){main{flex-direction:column}.out{width:100%;height:42%;border-left:0;border-top:1px solid var(--line)}.ed{flex:1}}
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">Chwezir <b>Code</b></span>
+  <select id="lang" class="btn" aria-label="Language">
+    <option value="html">HTML</option><option value="javascript">JavaScript</option><option value="css">CSS</option><option value="python">Python</option><option value="json">JSON</option><option value="text">Plain text</option>
+  </select>
+  <span class="sp"></span>
+  <button class="btn" id="files">Files</button>
+  <button class="btn" id="find">Find</button>
+  <button class="btn" id="fm" aria-label="Smaller text">A−</button>
+  <button class="btn" id="fp" aria-label="Larger text">A+</button>
+  <button class="btn" id="open">Open</button>
+  <button class="btn" id="save">Save</button>
+  <button class="btn" id="copy">Copy</button>
+  <button class="btn" id="theme">Theme</button>
+  <button class="btn run" id="run">Run</button>
+  <input type="file" id="file" hidden>
+</header>
+<div id="tabs"></div>
+<div id="fbar" hidden><input id="fi" placeholder="Find" aria-label="Find"><input id="ri" placeholder="Replace with" aria-label="Replace with"><button class="btn" id="fn">Next</button><button class="btn" id="fr">Replace</button><button class="btn" id="fa">Replace all</button><button class="btn" id="fx">Close</button></div>
+<main>
+  <nav id="side" hidden><div class="sh"><span>Files</span><button class="mini" id="nf" title="New file">+ New</button></div><div id="fl"></div></nav>
+  <section class="ed">
+    <div id="gut">1</div>
+    <div class="wrap"><pre id="hl" aria-hidden="true"></pre><textarea id="ta" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Code editor"></textarea></div>
+  </section>
+  <aside class="out">
+    <h2><span>Output</span><span id="note" style="color:var(--dim);font-weight:400"></span></h2>
+    <iframe id="frame" sandbox="allow-scripts" title="Output"></iframe>
+    <pre id="con"></pre>
+  </aside>
+</main>
+<footer><span id="pos">Ln 1, Col 1</span><span id="lg">HTML</span><span>Ctrl/Cmd + Enter to run</span></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const ta=$('ta'),hl=$('hl'),gut=$('gut'),con=$('con'),frame=$('frame');
+const STARTER=`<!DOCTYPE html>
+<html>
+<body style="font-family:sans-serif;text-align:center;padding:40px">
+  <h1>Hello from Chwezir Code</h1>
+  <button onclick="this.textContent='Clicked at '+new Date().toLocaleTimeString()">Click me</button>
+</body>
+</html>`;
+const EXT={html:'html',javascript:'js',css:'css',python:'py',json:'json',text:'txt'};
+const KW={
+ javascript:'const let var function return if else for while do switch case break continue new class extends import export from default async await try catch finally throw typeof instanceof this null undefined true false of in',
+ python:'def class return if elif else for while in not and or is import from as try except finally raise with lambda None True False pass break continue yield self print',
+ css:'', html:'', json:'true false null', text:''};
+let tabs=[{id:1,name:'index.html',lang:'html',code:STARTER}],cur=1,nid=2;
+
+try{const s=JSON.parse(localStorage.getItem('chwezir')||'null');if(s&&s.tabs&&s.tabs.length){tabs=s.tabs;cur=s.cur;nid=s.nid}}catch(e){}
+try{const t=localStorage.getItem('chwezir-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+const active=()=>tabs.find(t=>t.id===cur)||tabs[0];
+function save(){try{localStorage.setItem('chwezir',JSON.stringify({tabs,cur,nid}))}catch(e){}}
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function highlight(code,lang){
+  if(lang==='text')return esc(code);
+  const com={javascript:'\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/',python:'#.*',css:'\\/\\*[\\s\\S]*?\\*\\/',html:'<!--[\\s\\S]*?-->',json:'(?!)'}[lang];
+  const kws=KW[lang].trim().split(/\s+/).filter(Boolean).join('|');
+  const parts=[`(${com})`,'("(?:\\\\.|[^"\\\\\\n])*"|\'(?:\\\\.|[^\'\\\\\\n])*\'|`(?:\\\\.|[^`\\\\])*`)','(\\b\\d+(?:\\.\\d+)?\\b)',kws?`(\\b(?:${kws})\\b)`:'(?!)',lang==='html'?'(<\\/?[a-zA-Z][\\w-]*|\\/?>)':'(?!)'];
+  const re=new RegExp(parts.join('|'),'g'),cls=['c','s','n','k','t'];
+  let out='',last=0,m;
+  while((m=re.exec(code))){
+    if(m[0]==='')break;
+    out+=esc(code.slice(last,m.index));
+    const i=m.slice(1).findIndex(x=>x!==undefined);
+    out+=`<span class="${cls[i]}">${esc(m[0])}</span>`;
+    last=re.lastIndex;
+  }
+  return out+esc(code.slice(last));
+}
+function render(){
+  const t=active(),code=ta.value;
+  t.code=code;
+  hl.innerHTML=highlight(code,t.lang)+'\n ';
+  const n=code.split('\n').length;
+  gut.textContent=Array.from({length:n},(_,i)=>i+1).join('\n');
+  syncScroll();pos();save();
+}
+function syncScroll(){hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop}
+function pos(){
+  const v=ta.value.slice(0,ta.selectionStart).split('\n');
+  $('pos').textContent=`Ln ${v.length}, Col ${v[v.length-1].length+1}`;
+}
+function renderTabs(){
+  $('tabs').innerHTML='';
+  tabs.forEach(t=>{
+    const d=document.createElement('div');d.className='tab'+(t.id===cur?' on':'');
+    d.innerHTML=`<span>${esc(t.name)}</span>`;
+    d.onclick=()=>{cur=t.id;load()};
+    d.ondblclick=()=>{const n=prompt('Rename file',t.name);if(n){t.name=n;const e=n.split('.').pop(),l=Object.keys(EXT).find(k=>EXT[k]===e);if(l)t.lang=l;load()}};
+    if(tabs.length>1){const x=document.createElement('i');x.textContent='×';x.title='Close';x.onclick=e=>{e.stopPropagation();tabs=tabs.filter(q=>q.id!==t.id);if(cur===t.id)cur=tabs[0].id;load()};d.appendChild(x)}
+    $('tabs').appendChild(d);
+  });
+  const a=document.createElement('button');a.id='add';a.textContent='+ New file';a.onclick=()=>{tabs.push({id:nid,name:'untitled'+nid+'.js',lang:'javascript',code:''});cur=nid++;load()};
+  $('tabs').appendChild(a);
+}
+function load(){
+  const t=active();ta.value=t.code;$('lang').value=t.lang;$('lg').textContent=$('lang').selectedOptions[0].text;
+  renderTabs();render();ta.focus();
+}
+function log(msg,err){const d=document.createElement('div');if(err)d.className='e';d.textContent=msg;con.appendChild(d);con.scrollTop=con.scrollHeight}
+function run(){
+  const t=active();con.innerHTML='';$('note').textContent='';
+  const hook=`<script>(function(){const p=(k,a)=>parent.postMessage({chw:1,k,m:a.map(x=>{try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(' ')},'*');
+  ['log','info','warn','error'].forEach(k=>{const o=console[k];console[k]=(...a)=>{p(k,a);o.apply(console,a)}});
+  addEventListener('error',e=>p('error',[e.message+' (line '+e.lineno+')']))})()<\/script>`;
+  if(t.lang==='html')frame.srcdoc=hook+t.code;
+  else if(t.lang==='javascript')frame.srcdoc=`<body style="font-family:sans-serif">${hook}<script>${t.code.replace(/<\/script/gi,'<\\/script')}<\/script></body>`;
+  else if(t.lang==='css')frame.srcdoc=`<style>${t.code}</style><h1>Heading</h1><p>Paragraph with a <a href="#">link</a>.</p><button>Button</button>`;
+  else{frame.srcdoc='';$('note').textContent='Run supports HTML, JavaScript, CSS and Python'}
+}
+addEventListener('message',e=>{if(e.data&&e.data.chw)log(e.data.m,e.data.k==='error')});
+
+ta.addEventListener('input',render);
+ta.addEventListener('scroll',syncScroll);
+['keyup','click'].forEach(ev=>ta.addEventListener(ev,pos));
+ta.addEventListener('keydown',e=>{
+  if(e.key==='Tab'){e.preventDefault();document.execCommand('insertText',false,'  ')}
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run()}
+  if(e.key==='Enter'&&!e.ctrlKey&&!e.metaKey){
+    const b=ta.value.slice(0,ta.selectionStart),ln=b.slice(b.lastIndexOf('\n')+1),ind=ln.match(/^\s*/)[0];
+    if(ind){e.preventDefault();document.execCommand('insertText',false,'\n'+ind)}
+  }
+});
+$('lang').onchange=e=>{const t=active();t.lang=e.target.value;t.name=t.name.replace(/\.\w+$/,'')+'.'+EXT[t.lang];load()};
+$('run').onclick=run;
+$('open').onclick=()=>$('file').click();
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const x=f.name.split('.').pop(),l=Object.keys(EXT).find(k=>EXT[k]===x)||'text';tabs.push({id:nid,name:f.name,lang:l,code:String(r.result)});cur=nid++;load()};r.readAsText(f);e.target.value=''};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);$('copy').textContent='Copied'}catch(e){ta.select();$('copy').textContent='Selected'}setTimeout(()=>$('copy').textContent='Copy',1200)};
+$('theme').onclick=()=>{const d=document.documentElement,dark=getComputedStyle(d).getPropertyValue('--bg').trim()==='#12172a',n=dark?'light':'dark';d.dataset.theme=n;try{localStorage.setItem('chwezir-theme',n)}catch(e){}};
+
+/* ---- extra tools ---- */
+const renderTabs0=renderTabs;
+renderTabs=function(){renderTabs0();renderSide()};
+function renderSide(){
+  const fl=$('fl');fl.innerHTML='';
+  tabs.forEach(t=>{
+    const r=document.createElement('div');r.className='fr'+(t.id===cur?' on':'');
+    r.innerHTML='<span></span><b></b>';r.firstChild.textContent=t.name;
+    r.onclick=()=>{cur=t.id;load()};
+    const b=r.lastChild;b.style.fontWeight='400';
+    const ed=document.createElement('button');ed.className='mini';ed.textContent='✎';ed.title='Rename';
+    ed.onclick=e=>{e.stopPropagation();const n=prompt('Rename file',t.name);if(n){t.name=n;const x=n.split('.').pop(),l=Object.keys(EXT).find(k=>EXT[k]===x);if(l)t.lang=l;load()}};
+    b.appendChild(ed);
+    if(tabs.length>1){const d=document.createElement('button');d.className='mini';d.textContent='×';d.title='Delete';
+      d.onclick=e=>{e.stopPropagation();if(!confirm('Delete '+t.name+'?'))return;tabs=tabs.filter(q=>q.id!==t.id);if(cur===t.id)cur=tabs[0].id;load()};b.appendChild(d)}
+    fl.appendChild(r);
+  });
+}
+$('files').onclick=()=>{$('side').hidden=!$('side').hidden};
+$('nf').onclick=()=>{const n=prompt('File name','untitled'+nid+'.js');if(!n)return;const x=n.split('.').pop(),l=Object.keys(EXT).find(k=>EXT[k]===x)||'text';tabs.push({id:nid,name:n,lang:l,code:''});cur=nid++;load()};
+let fs=14;
+const setFs=d=>{fs=Math.min(28,Math.max(10,fs+d));document.documentElement.style.setProperty('--fs',fs+'px');syncScroll()};
+$('fm').onclick=()=>setFs(-1);$('fp').onclick=()=>setFs(1);
+function saveFile(){
+  const t=active(),a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([t.code],{type:'text/plain'}));a.download=t.name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  $('save').textContent='Saved';setTimeout(()=>$('save').textContent='Save',1200);
+}
+$('save').onclick=saveFile;
+addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveFile()}
+  if((e.ctrlKey||e.metaKey)&&e.key==='f'){e.preventDefault();$('fbar').hidden=false;$('fi').focus()}
+});
+$('find').onclick=()=>{$('fbar').hidden=!$('fbar').hidden;if(!$('fbar').hidden)$('fi').focus()};
+$('fx').onclick=()=>{$('fbar').hidden=true;ta.focus()};
+function findNext(){
+  const f=$('fi').value;if(!f)return false;
+  let i=ta.value.indexOf(f,ta.selectionEnd);if(i<0)i=ta.value.indexOf(f);
+  if(i<0)return false;
+  ta.focus();ta.setSelectionRange(i,i+f.length);
+  const line=ta.value.slice(0,i).split('\n').length;
+  ta.scrollTop=Math.max(0,(line-4)*fs*1.5);syncScroll();pos();return true;
+}
+$('fn').onclick=findNext;
+$('fi').onkeydown=e=>{if(e.key==='Enter')findNext()};
+$('fr').onclick=()=>{
+  const f=$('fi').value;if(!f)return;
+  if(ta.value.slice(ta.selectionStart,ta.selectionEnd)!==f&&!findNext())return;
+  ta.setRangeText($('ri').value,ta.selectionStart,ta.selectionEnd,'end');
+  ta.dispatchEvent(new Event('input'));findNext();
+};
+$('fa').onclick=()=>{const f=$('fi').value;if(!f)return;ta.value=ta.value.split(f).join($('ri').value);render()};
+let pyo=null;
+async function runPy(code){
+  $('note').textContent='Loading Python…';
+  try{
+    if(!pyo){
+      await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pyodide@0.26.4/pyodide.js';s.onload=ok;s.onerror=()=>no(new Error('Python needs an internet connection the first time it runs.'));document.head.appendChild(s)});
+      pyo=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/npm/pyodide@0.26.4/'});
+      pyo.setStdout({batched:m=>log(m)});pyo.setStderr({batched:m=>log(m,1)});
+    }
+    $('note').textContent='';
+    await pyo.runPythonAsync(code);
+  }catch(e){$('note').textContent='';log(String(e.message||e),1)}
+}
+const run0=run;
+run=function(){const t=active();if(t.lang==='python'){con.innerHTML='';frame.srcdoc='';runPy(t.code)}else run0()};
+$('run').onclick=run;
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+load();run();
+</script>
+</body>
+</html>
